@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-dkibaEm2/oen2hfzrK5YWZrSFa0Yxt12hRm5uvnO2eY='; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; form-action 'none'; base-uri 'none'">
+  <link rel="icon" href="data:,">
+  <title>MEC Resource Builder</title>
+  <style>
+    :root {color-scheme:light;--ink:#152e35;--teal:#00574e;--line:#a9beb9;--paper:#faf8f3}
+    * {box-sizing:border-box}
+    body {margin:0;color:var(--ink);background:var(--paper);font:17px/1.55 "Source Sans 3","Segoe UI",sans-serif}
+    main {max-width:55rem;margin:auto;padding:clamp(1rem,5vw,3.8rem) clamp(1rem,4vw,2rem)}
+    header {border-top:7px solid var(--teal);padding:1.2rem 0 .75rem}
+    h1 {margin:.45rem 0 .65rem;font:normal clamp(2.35rem,6vw,4rem)/1.04 "Baskervville",Georgia,serif;letter-spacing:-.04em}
+    header p {max-width:37rem;margin:.6rem 0 1.25rem}
+    section {border-top:1px solid var(--line);padding:1.25rem 0}
+    label,h2 {display:block;font-size:1.15rem;font-weight:650;margin:0 0 .45rem}
+    textarea {display:block;margin:.65rem 0 1rem;width:100%;min-height:8rem;max-width:100%;resize:vertical;padding:.8rem;color:var(--ink);background:white;border:1px solid #66827f;border-radius:4px;font:inherit}
+    button,.download {display:inline-block;padding:.6rem 1rem;border:1px solid var(--teal);border-radius:4px;background:var(--teal);color:white;text-decoration:none;font:600 1rem/1.4 "Source Sans 3","Segoe UI",sans-serif;cursor:pointer}
+    button.secondary,.download.secondary {background:transparent;color:var(--teal)}
+    button:hover,.download:hover {filter:brightness(.88)}
+    :focus-visible {outline:3px solid #af4e16;outline-offset:3px}
+    .actions,#downloads {display:flex;flex-wrap:wrap;gap:.5rem}
+    #error {color:#8b331b;margin:.7rem 0 0}
+    #error:empty {display:none}
+    #result p {margin:.3rem 0 1rem}
+    footer {border-top:1px solid var(--line);padding:1rem 0;color:#3c595e;font-size:.9rem}
+    [hidden] {display:none!important}
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>MEC Resource Builder</h1>
+      <p>Turn a Copilot workshop reply into a Brightspace quiz, formative exercise or set of course notes.</p>
+    </header>
+    <section aria-label="Build a resource">
+      <label for="reply">Copilot reply</label>
+      <textarea id="reply" placeholder="Paste the complete code block from the workshop agent." spellcheck="false"></textarea>
+      <div class="actions">
+        <button id="build" type="button">Build files</button>
+        <button id="open" class="secondary" type="button">Open saved JSON</button>
+        <input id="file" type="file" accept=".json,application/json" hidden>
+      </div>
+      <p id="error" role="alert"></p>
+    </section>
+    <section id="result" hidden aria-labelledby="resource-title">
+      <h2 id="resource-title" tabindex="-1"></h2>
+      <p id="instructions"></p>
+      <div id="downloads"></div>
+    </section>
+    <footer>Your browser builds the files on this device. Save the editable JSON to revise your resource later.</footer>
+  </main>
+  <script id="assets" type="application/json">{"quiz": "\u003cquestestinterop xmlns:d2l_2p0=\"http://desire2learn.com/xsd/d2lcp_v2p0\">\u003cassessment d2l_2p0:id=\"1\" title=\"TITLE\" ident=\"QUIZID\" d2l_2p0:resource_code=\"RESOURCECODE\">\u003crubric>\u003cflow_mat>\u003cmaterial>\u003cmattext texttype=\"text/html\" d2l_2p0:isdisplayed=\"no\" />\u003c/material>\u003c/flow_mat>\u003c/rubric>\u003cassessmentcontrol hide_question_pointsswitch=\"no\" hintswitch=\"no\" solutionswitch=\"no\" feedbackswitch=\"no\" />\u003cpresentation_material>\u003cflow_mat>\u003cmaterial label=\"page header\">\u003cmattext texttype=\"text/html\" d2l_2p0:isdisplayed=\"no\" />\u003c/material>\u003cmaterial label=\"page footer\">\u003cmattext texttype=\"text/html\" d2l_2p0:isdisplayed=\"no\" />\u003c/material>\u003c/flow_mat>\u003c/presentation_material>\u003cassess_procextension>\u003cd2l_2p0:intro_message texttype=\"text/plain\" d2l_2p0:isdisplayed=\"no\" />\u003cd2l_2p0:disable_right_click>no\u003c/d2l_2p0:disable_right_click>\u003cd2l_2p0:disable_pager_access>no\u003c/d2l_2p0:disable_pager_access>\u003cis_active>no\u003c/is_active>\u003cd2l_2p0:date_start />\u003cd2l_2p0:date_end />\u003cd2l_2p0:date_due />\u003cd2l_2p0:has_schedule_event>no\u003c/d2l_2p0:has_schedule_event>\u003cd2l_2p0:is_attempt_Rldb>no\u003c/d2l_2p0:is_attempt_Rldb>\u003cd2l_2p0:is_subview_Rldb>no\u003c/d2l_2p0:is_subview_Rldb>\u003cd2l_2p0:time_limit>0\u003c/d2l_2p0:time_limit>\u003cd2l_2p0:show_clock>no\u003c/d2l_2p0:show_clock>\u003cd2l_2p0:enforce_time_limit>no\u003c/d2l_2p0:enforce_time_limit>\u003cd2l_2p0:quiz_start_type>no\u003c/d2l_2p0:quiz_start_type>\u003cd2l_2p0:grace_period>0\u003c/d2l_2p0:grace_period>\u003cd2l_2p0:late_limit>0\u003c/d2l_2p0:late_limit>\u003cd2l_2p0:attempts_allowed>1\u003c/d2l_2p0:attempts_allowed>\u003cd2l_2p0:attempt_restrictions />\u003cd2l_2p0:mark_calculation_type>1\u003c/d2l_2p0:mark_calculation_type>\u003cd2l_2p0:is_forward_only>no\u003c/d2l_2p0:is_forward_only>\u003cd2l_2p0:paging_type_id>2\u003c/d2l_2p0:paging_type_id>\u003c/assess_procextension>\u003cassessfeedback title=\"\">\u003crubric>\u003cflow_mat>\u003cmaterial>\u003cmattext texttype=\"yes\" />\u003c/material>\u003c/flow_mat>\u003c/rubric>\u003cd2l_2p0:duration>0\u003c/d2l_2p0:duration>\u003cd2l_2p0:response_display_type_id>1\u003c/d2l_2p0:response_display_type_id>\u003cd2l_2p0:show_correct_answers>no\u003c/d2l_2p0:show_correct_answers>\u003cd2l_2p0:submission_restrictip>no\u003c/d2l_2p0:submission_restrictip>\u003cd2l_2p0:show_class_average>no\u003c/d2l_2p0:show_class_average>\u003cd2l_2p0:show_score_distribution>no\u003c/d2l_2p0:show_score_distribution>\u003c/assessfeedback>\u003csection ident=\"CONTAINER_SECTION\">\u003csection title=\"SECTION\" ident=\"SECT_80000001\" d2l_2p0:page=\"1\">\u003cpresentation_material>\u003cflow_mat>\u003cflow_mat>\u003cmaterial>\u003cmattext texttype=\"text/html\">&lt;p&gt;DESCRIPTION&lt;/p&gt;\u003c/mattext>\u003c/material>\u003c/flow_mat>\u003c/flow_mat>\u003c/presentation_material>\u003csectionproc_extension>\u003cd2l_2p0:display_section_name>yes\u003c/d2l_2p0:display_section_name>\u003cd2l_2p0:display_section_line>no\u003c/d2l_2p0:display_section_line>\u003cd2l_2p0:type_display_section>1\u003c/d2l_2p0:type_display_section>\u003c/sectionproc_extension>\u003c/section>\u003c/section>\u003c/assessment>\u003c/questestinterop>", "manifest": "\u003cmanifest xmlns=\"http://www.imsglobal.org/xsd/imscp_v1p1\" xmlns:d2l_2p0=\"http://desire2learn.com/xsd/d2lcp_v2p0\" xmlns:imsmd=\"http://www.imsglobal.org/xsd/imsmd_rootv1p2p1\" identifier=\"D2L_9320\">\u003cmetadata>\u003cimsmd:lom>\u003cimsmd:general>\u003cimsmd:title>\u003cimsmd:langstring xml:lang=\"en-ca\">TITLE\u003c/imsmd:langstring>\u003c/imsmd:title>\u003cimsmd:keyword>\u003cimsmd:langstring xml:lang=\"en-ca\">KEYWORD\u003c/imsmd:langstring>\u003c/imsmd:keyword>\u003cimsmd:language>en-ca\u003c/imsmd:language>\u003c/imsmd:general>\u003c/imsmd:lom>\u003c/metadata>\u003cresources>\u003cresource identifier=\"ORGID\" type=\"webcontent\" href=\"orgunitconfig\\orgunitconfig.xml\" title=\"\" d2l_2p0:material_type=\"orgunitconfig\" d2l_2p0:link_target=\"\" />\u003cresource identifier=\"QUIZID\" type=\"webcontent\" href=\"quiz_d2l_toolbox.xml\" title=\"TITLE\" d2l_2p0:material_type=\"d2lquiz\" d2l_2p0:link_target=\"\" />\u003c/resources>\u003c/manifest>", "orgunit": "\u003corgunit identifier=\"ORGID\" default_nav=\"Standard Course Nav Bar\" default_homepage=\"Course Homepage (Skilled Trades)\" />", "notesCSS": "\n  body { color: #202122; }\n  .resource-title { margin-top: 1rem; }\n\n  .alert-plum {\n    color: #4a235a;\n    background-color: #f4edf7;\n    border-color: #d7bde2;\n  }\n  .alert-plum strong { color: #4a235a; }\n\n  details.qc-tool,\n  details.check-answer {\n    border: 1px solid #cfd8dc;\n    border-radius: 6px;\n    background-color: #f8f9fa;\n    margin-bottom: 16px;\n    overflow: hidden;\n  }\n\n  details.qc-tool summary,\n  details.check-answer summary {\n    cursor: pointer;\n    font-weight: 600;\n    padding: 14px 16px;\n    background-color: #e9ecef;\n    border-left: 5px solid #0072ce;\n    list-style: none;\n  }\n\n  details.qc-tool summary::-webkit-details-marker,\n  details.check-answer summary::-webkit-details-marker { display: none; }\n\n  details.qc-tool summary::before,\n  details.check-answer summary::before {\n    content: \"▶\";\n    display: inline-block;\n    margin-right: 10px;\n  }\n\n  details.qc-tool[open] summary::before,\n  details.check-answer[open] summary::before { content: \"▼\"; }\n\n  details.qc-tool .qc-tool-body,\n  details.check-answer .answer-body {\n    padding: 16px 18px 18px 18px;\n    background-color: #ffffff;\n    border-top: 1px solid #dee2e6;\n  }\n\n  details.qc-tool[open],\n  details.check-answer[open] { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }\n\n  .workflow-box {\n    border: 1px solid #d9dee3;\n    border-radius: 8px;\n    background: #f8fbff;\n    padding: 16px;\n    margin: 18px 0;\n  }\n\n  .workflow-step {\n    border-left: 5px solid #0072ce;\n    background: #ffffff;\n    padding: 12px 14px;\n    margin-bottom: 10px;\n    border-radius: 4px;\n    border: 1px solid #dee2e6;\n  }\n\n  .mini-card {\n    border: 1px solid #d9dee3;\n    border-radius: 6px;\n    background: #fff;\n    padding: 14px;\n    height: 100%;\n  }\n\n  .mini-card h5 { margin-bottom: 8px; }\n\n  .formula-box {\n    border: 1px solid #d9dee3;\n    border-radius: 8px;\n    background: #f8fbff;\n    padding: 16px;\n    margin: 16px 0;\n  }\n\n  .small-muted { color: #6c757d; font-size: 0.95rem; }\n\n  .process-diagram {\n    border: 1px solid #d9dee3;\n    border-radius: 8px;\n    background: #ffffff;\n    padding: 12px;\n    margin: 18px 0;\n  }\n\n  .process-diagram svg {\n    width: 100%;\n    height: auto;\n  }\n\n  .comparison-good { border-left: 5px solid #28a745; }\n  .comparison-caution { border-left: 5px solid #ffc107; }\n  .comparison-danger { border-left: 5px solid #dc3545; }\n\n  .source-list li { margin-bottom: 8px; }\n\n  .quote-box {\n    border-left: 6px solid #0072ce;\n    background: #f8fbff;\n    padding: 16px;\n    font-size: 1.05rem;\n    margin: 16px 0;\n  }\n\n  .quote-box footer {\n    font-size: 0.95rem;\n    color: #6c757d;\n    margin-top: 8px;\n  }\n\nbody{font:18px/1.6 \"Segoe UI\",sans-serif;margin:0;background:white}main{max-width:1100px;margin:auto;padding:24px}header{display:flex;align-items:center}h1{font-size:2rem}h2{font-size:1.4rem;margin-top:30px}.row{display:flex;flex-wrap:wrap}.col-md-3{flex:1 1 220px;padding:8px}.alert{border:1px solid #ccd4d9;border-radius:5px;padding:16px;margin:20px 0}.alert-info{background:#e8f4fa}.alert-warning{background:#fff5d6}.table-responsive{overflow:auto}table{border-collapse:collapse;width:100%}th,td{padding:10px;border:1px solid #ccd4d9}button,summary{font:inherit}button{padding:8px 14px}button:focus-visible,summary:focus-visible{outline:3px solid #0072ce}math{font-size:1.2em}\nheader {gap: 16px;}\n#full-window {margin-left:auto; flex-shrink:0; white-space:nowrap;}\n#window-status:empty {display:none;}\n#window-status {font-size:.9rem;}\n.window-expanded #full-window {position:fixed; right:16px; top:12px; z-index:1000; background:var(--paper,#fbfaf6); box-shadow:0 2px 8px #0002;}\n.window-expanded header {padding-right:160px;}\n@media(max-width:600px){.window-expanded header {padding-top:45px; padding-right:0;}}\n@media print {#full-window,#window-status {display:none!important;}}\n", "exerciseCSS": "\n:root{--paper:#fbfaf6;--ink:#243139;--accent:#23596a}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.55 Bahnschrift,'Segoe UI',sans-serif}.shell{max-width:1000px;margin:auto;padding:24px}header{display:flex;align-items:center;border-bottom:2px solid var(--ink)}h1{font-size:2rem;margin:0 0 16px}h2{font-size:1.3rem}button,input,textarea{font:inherit}button{background:var(--paper);color:var(--ink);border:1px solid #9baeb5;padding:9px 14px;cursor:pointer}button:hover{background:#e8eeee}button:focus-visible,input:focus-visible,summary:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:3px}.steps{display:flex;flex-wrap:wrap;gap:4px;border-bottom:1px solid #b8c5c8;padding:16px 0}.steps button{border:0}.steps [aria-current]{background:#e8eeee;border-bottom:3px solid var(--accent)}details{border-top:1px solid #b8c5c8;padding:12px 0;margin:20px 0}summary{cursor:pointer;color:var(--accent)}.answer{background:#eff2ec;padding:14px}.check{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:22px 0}.check input{width:140px;padding:8px;border:1px solid #9baeb5}.feedback{min-height:1.5em}.feedback[data-state=wrong]{color:#8b3e21}.feedback[data-state=ok]{color:#22604a}math{font-size:1.2em}math[display=block]{margin:18px 0;text-align:left}.equation{overflow:auto;padding:6px}.choice{display:block;border:1px solid #b8c5c8;padding:10px;margin:8px 0}textarea{display:block;width:100%;min-height:100px;padding:12px}nav.bottom{display:flex;justify-content:space-between;margin-top:30px;border-top:1px solid #b8c5c8;padding-top:20px}[hidden]{display:none!important}.skip{position:absolute;left:-10000px}.skip:focus{left:16px;top:5px}table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #b8c5c8;text-align:left;padding:8px}@media(max-width:600px){.shell{padding:16px}h1{font-size:1.55rem}header{flex-wrap:wrap}}@media print{.steps,.bottom,.check button{display:none!important}.panel[hidden]{display:block!important}.panel{break-inside:avoid}}\n", "runtime": "/* Optional SCORM 2004 adapter 1.0.1. Inline in the selected SCORM HTML only. */\nwindow.NAITScorm = Object.freeze({\n  connect(config) {\n    'use strict';\n    if (!['completion', 'grades', 'both'].includes(config.mode) || !config.activityId)\n      throw new Error('Choose completion, grades or both and a stable activityId.');\n    const completion = config.mode !== 'grades', grades = config.mode !== 'completion';\n    const passing = config.passingScore ?? null;\n    if (passing !== null && (!Number.isFinite(passing) || passing \u003c 0 || passing > 100))\n      throw new Error('passingScore must be null or a number from 0 to 100.');\n    let api = null, ready = false, ended = false, snapshot = null, restored = null;\n    const started = Date.now(), errors = [];\n    function find(win) {\n      for (let i = 0; win && i \u003c 20; i++) {\n        try {\n          if (win.API_1484_11) return win.API_1484_11;\n          if (win === win.parent) break;\n          win = win.parent;\n        } catch (_) { break; }\n      }\n      return null;\n    }\n    try { api = find(window) || (window.opener ? find(window.opener) : null); } catch (_) {}\n    function invoke(method, ...args) {\n      try {\n        const result = String(api[method](...args));\n        if (method !== 'GetValue' && result !== 'true') {\n          let code = '';\n          try { code = String(api.GetLastError()); } catch (_) {}\n          errors.push(method + (args[0] ? ' ' + args[0] : '') + (code ? ' (code ' + code + ')' : ''));\n        }\n        return result;\n      } catch (_) { errors.push(method + ' could not reach Brightspace'); return ''; }\n    }\n    function set(key, value) { return ready && invoke('SetValue', key, String(value)) === 'true'; }\n    function commit() { return ready && invoke('Commit', '') === 'true'; }\n    function get(key) { return ready ? invoke('GetValue', key) : ''; }\n    if (api) ready = invoke('Initialize', '') === 'true';\n    if (ready) {\n      try {\n        const data = JSON.parse(get('cmi.suspend_data') || 'null');\n        if (data && data.schema === 1 && data.activityId === config.activityId && data.mode === config.mode)\n          restored = data.state;\n      } catch (_) {}\n    }\n    const initialErrorCount = errors.length;\n    function prepare(state) {\n      const data = JSON.stringify({ schema: 1, activityId: config.activityId, mode: config.mode, state });\n      if (data.length > 60000) throw new Error('Saved progress is too large. Store a smaller state.');\n      return { data, state: JSON.parse(data).state };\n    }\n    function invalidState(error) {\n      const reason = error instanceof Error ? error.message : 'Saved progress could not be prepared.';\n      errors.push(reason);\n      return { ok: false, reason, errors: errors.slice() };\n    }\n    function store(prepared) {\n      snapshot = prepared;\n      let ok = set('cmi.suspend_data', prepared.data);\n      ok = set('cmi.session_time', 'PT' + ((Date.now() - started) / 1000).toFixed(2) + 'S') && ok;\n      ok = set('cmi.exit', 'suspend') && ok;\n      return ok;\n    }\n    function save(state) {\n      if (!ready || ended) return { ok: false, reason: 'No active Brightspace connection.' };\n      let prepared;\n      try { prepared = prepare(state); } catch (error) { return invalidState(error); }\n      const ok = store(prepared);\n      return { ok: commit() && ok, errors: errors.slice() };\n    }\n    function submit({ state, completed, score }) {\n      if (!ready || ended) return { ok: false, reason: 'No active Brightspace connection.' };\n      // Validate the whole requested result before writing any of it.\n      if (completion && completed !== true) return { ok: false, reason: 'The completion requirements have not been met.' };\n      if (grades && (!Number.isFinite(score) || score \u003c 0 || score > 100))\n        return { ok: false, reason: 'Provide a calculated score from 0 to 100.' };\n      let prepared;\n      try { prepared = prepare(state); } catch (error) { return invalidState(error); }\n      let ok = true;\n      if (grades) {\n        for (const [key, value] of Object.entries({ min: 0, max: 100, raw: score, scaled: score / 100 }))\n          ok = set('cmi.score.' + key, value) && ok;\n        if (passing !== null) ok = set('cmi.success_status', score >= passing ? 'passed' : 'failed') && ok;\n      }\n      if (completion) ok = set('cmi.completion_status', 'completed') && ok;\n      // The NAIT Brightspace test rolled scores into Grades with a known state.\n      // Grade-only leaves the activity unfinished, rather than leaving it unknown.\n      else ok = set('cmi.completion_status', 'incomplete') && ok;\n      ok = store(prepared) && ok;\n      return { ok: commit() && ok, errors: errors.slice() };\n    }\n    function finish() {\n      if (!ready || ended) return;\n      if (snapshot !== null) { store(snapshot); commit(); }\n      ended = true;\n      invoke('Terminate', '');\n      ready = false;\n    }\n    window.addEventListener('pagehide', finish);\n    window.addEventListener('beforeunload', finish);\n    return Object.freeze({\n      mode: config.mode, restored,\n      get completionStatus() { return get('cmi.completion_status'); },\n      get connected() { return ready && !ended; },\n      get errors() { return errors.slice(); },\n      initializationAccepted: ready && initialErrorCount === 0,\n      save, submit, finish\n    });\n  }\n});\n", "windowsJS": "(() => {\n  'use strict';\n  const button = document.getElementById('full-window');\n  const status = document.getElementById('window-status');\n  let changes = [], windows = [], expanded = false;\n  function set(el, property, value) {\n    changes.push([el, property, el.style.getPropertyValue(property), el.style.getPropertyPriority(property)]);\n    el.style.setProperty(property, value, 'important');\n  }\n  function restore() {\n    for (const [el, property, value, priority] of changes.reverse()) {\n      if (value) el.style.setProperty(property, value, priority);\n      else el.style.removeProperty(property);\n    }\n    changes = [];\n    for (const win of windows) win.removeEventListener('keydown', escape);\n    windows = [];\n    expanded = false;\n    document.body.classList.remove('window-expanded');\n    button.textContent = 'Expand';\n    button.setAttribute('aria-pressed', 'false');\n  }\n  function escape(event) {\n    if (event.key === 'Escape' && !document.querySelector('dialog[open]')) {\n      restore();\n      button.focus({preventScroll: true});\n    }\n  }\n  button.addEventListener('click', () => {\n    if (expanded) { restore(); return; }\n    status.textContent = '';\n    try {\n      const chain = [];\n      let win = window;\n      while (win !== win.parent) {\n        const frame = win.frameElement;\n        if (!frame) throw new Error('Parent frame is inaccessible');\n        chain.push({frame, parent: win.parent});\n        win = win.parent;\n      }\n      if (!chain.length) {\n        status.textContent = 'The exercise already has its own browser window.';\n        return;\n      }\n      for (const {frame, parent} of chain.reverse()) {\n        // Preserve the frame in place so answers and event listeners survive.\n        for (let el = frame.parentElement; el; el = el.parentElement) {\n          set(el, 'transform', 'none');\n          set(el, 'filter', 'none');\n          set(el, 'perspective', 'none');\n          set(el, 'contain', 'none');\n          set(el, 'content-visibility', 'visible');\n          set(el, 'will-change', 'auto');\n          set(el, 'overflow', 'visible');\n          set(el, 'clip-path', 'none');\n          set(el, 'isolation', 'auto');\n          set(el, 'z-index', '2147483646');\n        }\n        for (const [property, value] of Object.entries({position:'fixed', inset:'0', width:'100vw', height:'100vh', 'max-width':'100vw', 'max-height':'100vh', 'min-width':'100vw', 'min-height':'100vh', margin:'0', border:'0', 'box-sizing':'border-box', 'z-index':'2147483647', background:'#fbfaf6'})) set(frame, property, value);\n        set(parent.document.documentElement, 'overflow', 'hidden');\n        set(parent.document.body, 'overflow', 'hidden');\n      }\n      windows = [window, ...chain.map(item => item.parent)];\n      for (const host of windows) host.addEventListener('keydown', escape);\n      expanded = true;\n      document.body.classList.add('window-expanded');\n      button.textContent = 'Exit full window';\n      button.setAttribute('aria-pressed', 'true');\n    } catch (error) {\n      restore();\n      status.textContent = 'Full-window view is unavailable in this viewer.';\n      console.warn('Full-window view unavailable:', error.message);\n    }\n  });\n  window.addEventListener('pagehide', restore);\n})();\n\n", "windowsCSS": "header {gap: 16px;}\n#full-window {margin-left:auto; flex-shrink:0; white-space:nowrap;}\n#window-status:empty {display:none;}\n#window-status {font-size:.9rem;}\n.window-expanded #full-window {position:fixed; right:16px; top:12px; z-index:1000; background:var(--paper,#fbfaf6); box-shadow:0 2px 8px #0002;}\n.window-expanded header {padding-right:160px;}\n@media(max-width:600px){.window-expanded header {padding-top:45px; padding-right:0;}}\n@media print {#full-window,#window-status {display:none!important;}}\n", "activity": "(() => {\n  'use strict';\n  const lesson = JSON.parse(document.getElementById('lesson-data').textContent);\n  // Flush the current controls before the adapter's own exit handler terminates the LMS session.\n  window.addEventListener('pagehide', flushPending);\n  window.addEventListener('beforeunload', flushPending);\n  const session = window.NAITScorm.connect({mode: 'completion', activityId: lesson.activityId});\n  const panels = [...document.querySelectorAll('[data-panel]')];\n  const nav = [...document.querySelectorAll('[data-step]')];\n  const controls = [...document.querySelectorAll('[data-answer]')];\n  const reveals = [...document.querySelectorAll('details')];\n  const status = document.getElementById('save-status');\n  const complete = document.getElementById('complete');\n  let step = 0;\n  let finished = session.completionStatus === 'completed';\n  let timer;\n  function flushPending() {\n    if (timer !== undefined) save();\n  }\n  function capture() {\n    return {step, values: controls.map(c => c.value), open: reveals.map(d => d.open)};\n  }\n  function save() {\n    clearTimeout(timer);\n    timer = undefined;\n    if (!session.connected) {\n      status.textContent = 'Preview. Open the activity in Brightspace to save progress.';\n      return;\n    }\n    status.textContent = session.save(capture()).ok ? 'Progress saved in Brightspace.' : 'Saving failed. Keep this page open and use Save progress to retry.';\n  }\n  function show(index) {\n    step = index;\n    panels.forEach((p, i) => p.hidden = i !== step);\n    nav.forEach((b, i) => i === step ? b.setAttribute('aria-current','step') : b.removeAttribute('aria-current'));\n    document.getElementById('previous').disabled = step === 0;\n    document.getElementById('next').hidden = step === panels.length - 1;\n    complete.hidden = step !== panels.length - 1;\n    complete.disabled = finished;\n    complete.textContent = finished ? 'Completed' : 'Mark as complete';\n  }\n  function move(index) {\n    show(index);\n    panels[index].querySelector('h2').focus();\n    save();\n  }\n  const old = session.restored;\n  if (old) {\n    controls.forEach((c,i) => c.value = String(old.values?.[i] ?? ''));\n    reveals.forEach((d,i) => d.open = old.open?.[i] === true);\n  }\n  show(Number.isInteger(old?.step) && panels[old.step] ? old.step : 0);\n  status.textContent = session.connected ? (old ? 'Saved progress restored.' : 'Connected to Brightspace.') : 'Preview. Open the activity in Brightspace to save progress.';\n  nav.forEach((b,i) => b.onclick = () => move(i));\n  document.getElementById('previous').onclick = () => move(step - 1);\n  document.getElementById('next').onclick = () => move(step + 1);\n  document.getElementById('save').onclick = save;\n  document.querySelectorAll('[data-check]').forEach((b,i) => b.onclick = () => {\n    const q = lesson.questions[i], value = controls[i].value.trim();\n    const valid = value !== '' && Number.isFinite(Number(value));\n    const right = valid && (q.choices ? Number(value) === q.key : Math.abs(Number(value)-q.answer) \u003c= q.tolerance + Number.EPSILON * Math.max(1, Math.abs(q.answer)) * 4);\n    document.getElementById('feedback-' + i).textContent = !valid ? 'Enter an answer first.' : right ? 'Correct. ' + q.explanation : 'Try again. Review the question and your answer.';\n  });\n  document.addEventListener('input', () => {\n    if (session.connected) status.textContent = 'Saving progress…';\n    clearTimeout(timer);\n    timer = setTimeout(save, 300);\n  });\n  document.addEventListener('change', save);\n  reveals.forEach(d => d.addEventListener('toggle', save));\n  complete.onclick = () => {\n    clearTimeout(timer);\n    timer = undefined;\n    if (!session.connected) { save(); return; }\n    const result = session.submit({state:capture(), completed:true});\n    if (result.ok) finished = true;\n    show(step);\n    status.textContent = result.ok ? 'Completion recorded in Brightspace.' : 'Completion could not be confirmed. Select Mark as complete to retry.';\n  };\n})();\n"}</script>
+  <script>'use strict';
+const assets = JSON.parse(document.getElementById('assets').textContent);
+const enc = new TextEncoder();
+const esc = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const para = value => '<p>'+esc(value).replace(/\n/g,'<br>')+'</p>';
+const safeJSON = value => JSON.stringify(value).replace(/</g,'\\u003c');
+const scriptTag = value => '<scr'+'ipt>'+value+'</scr'+'ipt>';
+function insist(test,message){if(!test)throw new Error(message);}
+function textValue(value,name){insist(typeof value==='string' && value.trim(),name+' needs text.');}
+function list(value,name){insist(Array.isArray(value)&&value.length>0,name+' needs at least one entry.');}
+function texts(value,name){list(value,name);value.forEach(v=>textValue(v,name));}
+function keys(object,allowed,name){
+  insist(object && typeof object==='object' && !Array.isArray(object),name+' must be an object.');
+  const extra=Object.keys(object).filter(k=>!allowed.includes(k));
+  insist(!extra.length,name+' includes an unsupported field: '+extra.join(', ')+'. Review this requirement before building.');
+}
+function choice(q,name){
+  texts(q.choices,name+' choices');
+  insist(q.choices.length>=2 && new Set(q.choices.map(x=>x.trim())).size===q.choices.length,name+' needs at least two distinct choices.');
+  insist(Number.isInteger(q.key)&&q.key>=0&&q.key<q.choices.length,name+' has an invalid answer key.');
+}
+function validate(d){
+  const groups={exercise:['scenario','objective','questions','reflection','modelAnswer','activityId'],quiz:['sections'],notes:['bigIdea','objectives','sections','checks','takeaways']};
+  insist(d && Object.hasOwn(groups,d.kind),'Choose a reply produced for the exercise, quiz or notes builder.');
+  keys(d,['kind','title','sources',...groups[d.kind]],'Resource');textValue(d.title,'Title');texts(d.sources,'Sources');
+  if(d.kind==='exercise'){
+    for(const k of ['scenario','objective','reflection','modelAnswer'])textValue(d[k],k);
+    if(d.activityId!==undefined)textValue(d.activityId,'Activity ID');
+    list(d.questions,'Practice questions');
+    d.questions.forEach((q,i)=>{
+      const n='Practice question '+(i+1);
+      keys(q,q.choices?['prompt','choices','key','explanation']:['prompt','answer','tolerance','explanation'],n);
+      textValue(q.prompt,n);textValue(q.explanation,n+' explanation');
+      if(q.choices)choice(q,n);
+      else insist(Number.isFinite(q.answer)&&Number.isFinite(q.tolerance)&&q.tolerance>=0,n+' requires a finite answer and nonnegative tolerance.');
+    });
+  }else if(d.kind==='quiz'){
+    list(d.sections,'Sections');d.sections.forEach((s,i)=>{
+      keys(s,['title','text','questions'],'Section '+(i+1));textValue(s.title,'Section title');
+      if(s.text!==undefined)insist(typeof s.text==='string','Section text must be text.');
+      list(s.questions,'Questions in '+s.title);
+      s.questions.forEach((q,j)=>{
+        const n='Question '+(j+1)+' in '+s.title;keys(q,['type','prompt','choices','key','points'],n);
+        insist(['mc','tf'].includes(q.type),n+' requires the full quiz kit for this question type.');
+        textValue(q.prompt,n);choice(q,n);insist(Number.isFinite(q.points)&&q.points>0,n+' needs positive points.');
+        if(q.type==='tf')insist(q.choices.length===2 && q.choices[0].toLowerCase()==='true' && q.choices[1].toLowerCase()==='false',n+' needs True then False.');
+      });
+    });
+  }else{
+    textValue(d.bigIdea,'Big idea');texts(d.objectives,'Objectives');texts(d.takeaways,'Takeaways');list(d.sections,'Sections');
+    d.sections.forEach(s=>{keys(s,['title','paragraphs','example','misstep'],'Notes section');textValue(s.title,'Heading');texts(s.paragraphs,s.title);
+      for(const k of ['example','misstep'])if(s[k]!==undefined)textValue(s[k],k);
+    });
+    list(d.checks,'Self-checks');d.checks.forEach(q=>{keys(q,['question','answer'],'Self-check');textValue(q.question,'Self-check');textValue(q.answer,'Self-check answer');});
+  }
+}
+const ul=items=>'<ul>'+items.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>';
+function htmlDoc(title,style,body,scripts,metadata){
+  const info=JSON.stringify(metadata).replace(/-/g,'\\u002d').replace(/</g,'\\u003c').replace(/>/g,'\\u003e');
+  return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+esc(title)+'</title><style>'+style+'</style></head><body><!-- MEC build info '+info+' -->'+body+scripts+'</body></html>';
+}
+function notes(d){
+  const sections=d.sections.map(s=>'<section><h2>'+esc(s.title)+'</h2>'+s.paragraphs.map(para).join('')+
+    (s.example?'<div class="formula-box"><h3>Worked example</h3>'+para(s.example)+'</div>':'')+
+    (s.misstep?'<aside class="alert alert-warning"><strong>Common misstep</strong>'+para(s.misstep)+'</aside>':'')+'</section>').join('');
+  const checks=d.checks.map(q=>'<details class="check-answer"><summary>'+esc(q.question)+'</summary><div class="answer-body">'+para(q.answer)+'</div></details>').join('');
+  const body='<main><header><h1 class="resource-title">'+esc(d.title)+'</h1><button id="full-window" type="button" aria-pressed="false">Expand</button><span id="window-status" role="status"></span></header><div class="alert alert-info"><strong>Big idea</strong>'+para(d.bigIdea)+'</div><h2>Learning objectives</h2>'+ul(d.objectives)+sections+'<h2>Check your understanding</h2>'+checks+'<h2>Key takeaways</h2>'+ul(d.takeaways)+'<h2>Sources</h2>'+ul(d.sources)+'</main>';
+  return htmlDoc(d.title,assets.notesCSS+'\n'+assets.windowsCSS,body,scriptTag(assets.windowsJS),{builder:'MEC Resource Builder 1.0',component:'NAIT full-window',sources:d.sources});
+}
+function exercise(d){
+  const fields=d.questions.map((q,i)=>{
+    const control=q.choices?'<select data-answer id="answer-'+i+'"><option value="">Choose an answer</option>'+q.choices.map((c,j)=>'<option value="'+j+'">'+esc(c)+'</option>').join('')+'</select>':'<input data-answer id="answer-'+i+'" inputmode="decimal" maxlength="40">';
+    return '<div class="item"><label for="answer-'+i+'">'+esc(q.prompt)+'</label>'+control+' <button type="button" data-check>Check answer</button><p role="status" id="feedback-'+i+'"></p><details><summary>Show explanation</summary>'+para(q.explanation)+'</details></div>';
+  }).join('');
+  const titles=['Read','Practise','Explain'];
+  const content=[para(d.objective)+para(d.scenario),fields,'<label for="reflection">'+esc(d.reflection)+'</label><textarea id="reflection" data-answer maxlength="1500" rows="4"></textarea><details><summary>Compare your explanation</summary>'+para(d.modelAnswer)+'</details>'];
+  const panels=titles.map((t,i)=>'<section data-panel '+(i?'hidden':'')+'><h2 tabindex="-1">'+t+'</h2>'+content[i]+'</section>').join('');
+  const body='<main class="shell"><header><h1>'+esc(d.title)+'</h1></header><nav class="steps" aria-label="Activity steps">'+titles.map((t,i)=>'<button type="button" data-step="'+i+'">'+t+'</button>').join('')+'</nav>'+panels+'<nav class="bottom" aria-label="Activity navigation"><button id="previous">Previous</button><button id="next">Next</button><button id="complete" hidden>Mark as complete</button></nav><p id="save-status" role="status"></p><button id="save">Save progress</button></main>';
+  const data='<scr'+'ipt id="lesson-data" type="application/json">'+safeJSON(d)+'</scr'+'ipt>';
+  const css=assets.exerciseCSS+'\n[hidden]{display:none!important}.item{margin:1.25rem 0}label{display:block;font-weight:600;margin:.6rem 0}select,textarea,input{font:inherit;max-width:100%;padding:.45rem}textarea{display:block;width:min(100%,52rem)}button{margin:.15rem}';
+  return htmlDoc(d.title,css,body,data+scriptTag(assets.runtime)+scriptTag(assets.activity),{builder:'MEC Resource Builder 1.0',mode:'completion',sources:d.sources});
+}
+function crc32(bytes){
+  let crc=-1;for(const b of bytes){crc^=b;for(let i=0;i<8;i++)crc=(crc>>>1)^((crc&1)?0xedb88320:0);}
+  return (crc^-1)>>>0;
+}
+function zip(files){
+  const chunks=[],central=[];let offset=0,centralLength=0;
+  function header(size){const bytes=new Uint8Array(size);const dv=new DataView(bytes.buffer);return {bytes,u16:(p,v)=>dv.setUint16(p,v,true),u32:(p,v)=>dv.setUint32(p,v,true)};}
+  for(const [name,value] of Object.entries(files)){
+    const filename=enc.encode(name),data=enc.encode(value),sum=crc32(data),local=header(30),dir=header(46);
+    local.u32(0,0x04034b50);local.u16(4,20);local.u16(6,0x800);local.u16(12,33);
+    local.u32(14,sum);local.u32(18,data.length);local.u32(22,data.length);local.u16(26,filename.length);
+    dir.u32(0,0x02014b50);dir.u16(4,20);dir.u16(6,20);dir.u16(8,0x800);dir.u16(14,33);
+    dir.u32(16,sum);dir.u32(20,data.length);dir.u32(24,data.length);dir.u16(28,filename.length);dir.u32(42,offset);
+    chunks.push(local.bytes,filename,data);central.push(dir.bytes,filename);
+    offset+=30+filename.length+data.length;centralLength+=46+filename.length;
+  }
+  const end=header(22),count=Object.keys(files).length;end.u32(0,0x06054b50);end.u16(8,count);end.u16(10,count);end.u32(12,centralLength);end.u32(16,offset);
+  return new Blob([...chunks,...central,end.bytes],{type:'application/zip'});
+}
+function markup(s,values){return s.replace(/@@([A-Z]+)@@/g,(_,k)=>values[k]);}
+function makeQuiz(d){
+  const ns='http://desire2learn.com/xsd/d2lcp_v2p0',uid=()=>crypto.randomUUID(),qid='RES_'+uid(),orgid='ORG_'+uid();
+  const doc=new DOMParser().parseFromString(assets.quiz,'application/xml'), assessment=doc.getElementsByTagName('assessment')[0];
+  assessment.setAttribute('title',d.title);assessment.setAttribute('ident',qid);assessment.setAttributeNS(ns,'d2l_2p0:resource_code',uid().toUpperCase());
+  const container=assessment.getElementsByTagName('section')[0],template=container.removeChild(container.getElementsByTagName('section')[0]);
+  let count=0;
+  d.sections.forEach((s,page)=>{
+    const sec=template.cloneNode(true);sec.setAttribute('title',s.title);sec.setAttribute('ident','SECT_'+(page+1));sec.setAttributeNS(ns,'d2l_2p0:page',String(page+1));
+    sec.querySelector('mattext').textContent=s.text?para(s.text):'';
+    sec.getElementsByTagNameNS(ns,'type_display_section')[0].textContent=s.text?'1':'0';
+    for(const q of s.questions){
+      count++;const id='QUES_'+count,lid=id+'_LID',kind=q.type==='tf'?'True/False':'Multiple Choice';
+      const values={OBJ:'OBJ_'+count,ID:id,PAGE:String(page+1),TITLE:esc(q.prompt.slice(0,120)),LID:lid,BODY:esc(para(q.prompt)),META:'',CHOICES:'',SCORING:''};
+      const meta={qmd_computerscored:'yes',qmd_questiontype:kind,qmd_weighting:q.points.toFixed(9),qmd_globalid:uid(),qmd_displayid:'Q'+count,qmd_aihumanorigin:'AIUnknown'};
+      values.META=Object.entries(meta).map(([k,v])=>'<qti_metadatafield><fieldlabel>'+k+'</fieldlabel><fieldentry>'+esc(v)+'</fieldentry></qti_metadatafield>').join('');
+      q.choices.forEach((v,j)=>{const aid=id+'_A'+(j+1);
+        values.CHOICES+='<flow_label class="Block"><response_label ident="'+aid+'"><flow_mat><material><mattext texttype="text/plain">'+esc(v)+'</mattext></material></flow_mat></response_label></flow_label>';
+        values.SCORING+='<respcondition title="Response Condition '+(j+1)+'"><conditionvar><varequal respident="'+lid+'">'+aid+'</varequal></conditionvar><setvar action="Set">'+(j===q.key?'100':'0')+'</setvar></respcondition>';
+      });
+      const raw=markup('<item xmlns:d2l_2p0="'+ns+'" ident="@@OBJ@@" label="@@ID@@" d2l_2p0:page="@@PAGE@@" title="@@TITLE@@"><itemmetadata><qtimetadata>@@META@@</qtimetadata></itemmetadata><itemproc_extension><d2l_2p0:difficulty>1</d2l_2p0:difficulty><d2l_2p0:isbonus>no</d2l_2p0:isbonus><d2l_2p0:ismandatory>no</d2l_2p0:ismandatory></itemproc_extension><presentation><flow><material><mattext texttype="text/html">@@BODY@@</mattext></material><response_extension><d2l_2p0:display_style>2</d2l_2p0:display_style><d2l_2p0:enumeration>6</d2l_2p0:enumeration><d2l_2p0:grading_type>0</d2l_2p0:grading_type></response_extension><response_lid ident="@@LID@@" rcardinality="Single"><render_choice shuffle="no">@@CHOICES@@</render_choice></response_lid></flow></presentation><resprocessing>@@SCORING@@</resprocessing></item>',values);
+      const fragment=new DOMParser().parseFromString(raw,'application/xml');
+      insist(!fragment.querySelector('parsererror'),'Question '+count+' contains characters that cannot be stored in XML.');
+      sec.appendChild(doc.importNode(fragment.documentElement,true));
+    }
+    container.appendChild(sec);
+  });
+  const sub=x=>x.replace(/\b(TITLE|KEYWORD|QUIZID|ORGID)\b/g,k=>({TITLE:esc(d.title),KEYWORD:'toolbox',QUIZID:qid,ORGID:orgid}[k]));
+  return zip({'imsmanifest.xml':sub(assets.manifest),'orgunitconfig/orgunitconfig.xml':sub(assets.orgunit),'quiz_d2l_toolbox.xml':new XMLSerializer().serializeToString(doc)});
+}
+function buildResource(data){
+  validate(data);
+  const fileBase=data.title.normalize('NFKC').replace(/[<>:"/\\|?*\x00-\x1f]+/g,' ').replace(/[ .]+$/,'').trim().slice(0,88)||'Teaching resource';
+  const results=[];
+  if(data.kind==='exercise'){
+    if(!data.activityId)data.activityId='mec-'+crc32(enc.encode(data.title+'\n'+data.scenario)).toString(16);
+    const html=exercise(data),title=esc(data.title),id=esc(data.activityId);
+    const manifest='<?xml version="1.0" encoding="UTF-8"?><manifest identifier="'+id+'" version="1.0" xmlns="http://www.imsglobal.org/xsd/imscp_v1p1" xmlns:adlcp="http://www.adlnet.org/xsd/adlcp_v1p3" xmlns:imsss="http://www.imsglobal.org/xsd/imsss"><metadata><schema>ADL SCORM</schema><schemaversion>2004 4th Edition</schemaversion></metadata><organizations default="ORG"><organization identifier="ORG"><title>'+title+'</title><item identifier="ACTIVITY" identifierref="SCO"><title>'+title+'</title><imsss:sequencing><imsss:deliveryControls completionSetByContent="true" objectiveSetByContent="true"/></imsss:sequencing></item></organization></organizations><resources><resource identifier="SCO" type="webcontent" adlcp:scormType="sco" href="index.html"><file href="index.html"/></resource></resources></manifest>';
+    results.push(['Download SCORM ZIP',fileBase+' - SCORM.zip',zip({'imsmanifest.xml':manifest,'index.html':html})],['Editable HTML',fileBase+'.html',new Blob([html],{type:'text/html'})]);
+  }else if(data.kind==='notes'){
+    results.push(['Download lesson HTML',fileBase+'.html',new Blob([notes(data)],{type:'text/html'})]);
+  }else{results.push(['Download quiz ZIP',fileBase+' - quiz.zip',makeQuiz(data)]);}
+  results.push(['Editable JSON',fileBase+'.json',new Blob([JSON.stringify(data,null,2)+'\n'],{type:'application/json'})]);
+  return results;
+}
+
+const replyBox = document.getElementById('reply');
+const fileInput = document.getElementById('file');
+const downloadList = document.getElementById('downloads');
+const resultPanel = document.getElementById('result');
+const errorMessage = document.getElementById('error');
+const steps = {
+  exercise: 'Add the SCORM ZIP in Brightspace Content using Add Existing, then SCORM/xAPI Object. Choose no grade item and open it in a new tab.',
+  quiz: 'In Brightspace Course Admin, open Import / Export / Copy Components and import the quiz ZIP. Preview the hidden quiz before releasing it.',
+  notes: 'Upload the lesson HTML to your Brightspace content unit. Open it to check the examples, self-checks and Expand control.'
+};
+
+function resetDownloads() {
+  for (const link of downloadList.querySelectorAll('a')) URL.revokeObjectURL(link.href);
+  downloadList.replaceChildren();
+  resultPanel.hidden = true;
+  errorMessage.textContent = '';
+}
+
+function unpackReply(text) {
+  try {
+    return JSON.parse(text.trim());
+  } catch {
+    const blocks = [...text.matchAll(/\x60\x60\x60(?:json)?\s*([\s\S]*?)\x60\x60\x60/gi)];
+    if (blocks.length === 1) {
+      try { return JSON.parse(blocks[0][1]); } catch { /* Use the same recovery message below. */ }
+    }
+    throw new Error('Paste the complete JSON code block from the workshop agent, or open a saved JSON file.');
+  }
+}
+
+function buildFiles() {
+  resetDownloads();
+  try {
+    const data = unpackReply(replyBox.value);
+    const files = buildResource(data);
+    for (const [label, filename, contents] of files) {
+      const link = document.createElement('a');
+      link.textContent = label;
+      link.className = downloadList.childElementCount ? 'download secondary' : 'download';
+      link.href = URL.createObjectURL(contents);
+      link.download = filename;
+      downloadList.append(link);
+    }
+    const title = document.getElementById('resource-title');
+    title.textContent = data.title;
+    document.getElementById('instructions').textContent = steps[data.kind];
+    resultPanel.hidden = false;
+    title.focus();
+  } catch (error) {
+    resetDownloads();
+    errorMessage.textContent = error.message;
+  }
+}
+
+replyBox.addEventListener('input', resetDownloads);
+document.getElementById('build').addEventListener('click', buildFiles);
+document.getElementById('open').addEventListener('click', () => fileInput.click());
+fileInput.addEventListener('change', async () => {
+  const file = fileInput.files[0];
+  if (!file) return;
+  try {
+    replyBox.value = await file.text();
+    buildFiles();
+  } catch {
+    resetDownloads();
+    errorMessage.textContent = 'This file could not be read. Try opening it again.';
+  } finally {
+    fileInput.value = '';
+  }
+});
+</script>
+</body>
+</html>
